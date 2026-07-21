@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jonji.bet — Bonuses, Rewards & Monthly Leaderboards</title>
+<meta name="description" content="Jonji.bet is a rewards hub for CS2 and crypto gaming. Claim exclusive sponsor bonuses with code JONJI and climb the monthly leaderboard for a share of the prize pool." />
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Wet+Paint&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="css/index.css" />
+</head>
+
+<body>
+  <div class="ambient"></div>
+  <div class="grain"></div>
+  <div id="particle-container" class="particle-layer" style="height: 100%;"></div>
+
+  <div class="page">
+
+    <!-- ============ NAVBAR ============ -->
+    <header id="nav" class="site-header">
+      <div class="container">
+        <div id="site-header-bar" class="site-header__bar">
+          <a href="#top" class="site-header__logo">
+            <span class="site-header__logo-text">Jonji</span>
+            <span class="site-header__logo-text site-header__logo-text--accent">.bet</span>
+          </a>
+
+          <nav id="site-header-nav" class="site-header__nav">
+            <a href="#top" class="site-header__link">Home</a>
+            <a href="thrill.html" class="site-header__link">Leaderboard</a>
+            <a href="#" class="site-header__link">Points Shop</a>
+            <a href="#" class="site-header__link">Level Up Rewards</a>
+            <a href="#" class="site-header__link">GTB</a>
+            <a href="#" class="site-header__link">Battleground</a>
+          </nav>
+
+          <div class="site-header__actions">
+            <button class="btn-signin">Sign in</button>
+            <a href="#bonuses" class="btn btn-primary btn--sm">
+              <i data-lucide="gift"></i>
+                 <span class="bonus-text">  Claim bonuses</span>
+            </a>
+            <button id="site-header-menu-btn" class="site-header__menu-btn" aria-label="Toggle menu" aria-expanded="false" aria-controls="site-header-nav">
+              <i data-lucide="menu"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============ HERO ============ -->
+    <section id="top" class="hero">
+
+      <div class="hero__backdrop"></div>
+      <div class="hero__fade"></div>
+
+      <div class="container hero__content">
+        <div class="logo-container">
+          <div class="logo-container__glow"></div>
+          <img src="images/logo.png" alt="JONJI" class="logo-img">
+          <div class="bet-tag">.BET</div>
+        </div>
+
+        <div class="reveal hero__intro">
+          <p class="hero__tagline">Start Earning Rewards.</p>
+          <p class="hero__subtitle">
+            Claim exclusive bonuses, climb the leaderboard and win great</span> prizes</span>
+          </p>
+        </div>
+
+        <div class="reveal hero__cta-row">
+          <a href="#bonuses" class="btn btn-primary btn--lg">
+            <i data-lucide="gift"></i>
+            Claim bonuses
+          </a>
+          <a href="thrill.html" class="btn btn-ghost btn--lg">
+            <i data-lucide="trophy" class="icon-gold"></i>
+            Leaderboard
+          </a>
+        </div>
+
+        <!-- Feature strip -->
+        <div class="reveal feature-strip">
+          <div class="feature-item">
+            <i data-lucide="gift" class="feature-icon-glow"></i>
+            <div>
+              <p class="feature-item__title">Bonus Rewards</p>
+              <p class="feature-item__desc">for all code JONJI users</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <i data-lucide="award" class="feature-icon-glow"></i>
+            <div>
+              <p class="feature-item__title">Leaderboard</p>
+              <p class="feature-item__desc">Compete &amp; win $ prizes</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <i data-lucide="star" class="feature-icon-glow"></i>
+            <div>
+              <p class="feature-item__title">Level Up Rewards</p>
+              <p class="feature-item__desc">Win exclusive prizes monthly</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <i data-lucide="shield-check" class="feature-icon-glow"></i>
+            <div>
+              <p class="feature-item__title">VIP System</p>
+              <p class="feature-item__desc">Unlock VIP perks &amp; benefits</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal hero__scroll">
+          <p class="hero__scroll-label">Scroll down</p>
+          <i data-lucide="chevron-down"></i>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BONUSES ============ -->
+    <section id="bonuses" class="hairline site-section">
+      <div class="container">
+        <div class="reveal section-intro">
+          <p class="eyebrow">Sponsor bonuses</p>
+          <h2 class="section-heading">One code. Better payouts everywhere.</h2>
+          <p class="section-subtext">Every partner honours code <span class="text-highlight">JONJI</span> with its own exclusive offer.</p>
+        </div>
+
+        <div class="bonus-grid">
+
+          <!-- Card: Thrill -->
+          <article class="reveal bonus-card">
+            <div class="bonus-card__header">
+              <span class="bonus-logo-mark">
+                <img src="images/thrill-logo.png" alt="Thrill logo">
+              </span>
+              <p class="bonus-card__domain">thrill.com</p>
+            </div>
+
+            <div class="bonus-card__features">
+              <div class="bonus-feature">
+                <span class="bonus-icon"><i data-lucide="percent"></i></span>
+                <div>
+                  <p class="bonus-feature__title">10% Rakeback</p>
+                  <p class="bonus-feature__desc">Earned back on every wager</p>
+                </div>
+              </div>
+              <div class="bonus-feature">
+                <span class="bonus-icon"><i data-lucide="award"></i></span>
+                <div>
+                  <p class="bonus-feature__title">Join Leaderboard Automatically</p>
+                  <p class="bonus-feature__desc">No extra signup steps needed</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bonus-card__actions">
+              <button data-copy="JONJI" class="copy-btn code-box">
+                <span class="copy-label">JONJI</span>
+                <i data-lucide="copy"></i>
+              </button>
+              <a href="#" class="btn btn-primary bonus-card__claim">
+                Claim Bonus <i data-lucide="chevron-right"></i>
+              </a>
+            </div>
+            <p class="bonus-card__note">
+              <i data-lucide="shield-check"></i> Click the button to instantly register.
+            </p>
+          </article>
+
+          <!-- Card: Clash.gg -->
+          <article class="reveal bonus-card">
+            <div class="bonus-card__header">
+              <span class="bonus-logo-mark">
+                <img src="images/clash-logo.gif" alt="Clash.gg logo">
+              </span>
+              <p class="bonus-card__domain">clash.gg</p>
+            </div>
+
+            <div class="bonus-card__features">
+              <div class="bonus-feature">
+                <span class="bonus-icon"><i data-lucide="percent"></i></span>
+                <div>
+                  <p class="bonus-feature__title">+5% Deposit Bonus</p>
+                  <p class="bonus-feature__desc">Extra funds added on deposit</p>
+                </div>
+              </div>
+              <div class="bonus-feature">
+                <span class="bonus-icon"><i data-lucide="zap"></i></span>
+                <div>
+                  <p class="bonus-feature__title">Instant Rakeback</p>
+                  <p class="bonus-feature__desc">Cash back paid out instantly</p>
+                </div>
+              </div>
+              <div class="bonus-feature">
+                <span class="bonus-icon"><i data-lucide="award"></i></span>
+                <div>
+                  <p class="bonus-feature__title">Join Leaderboard Automatically</p>
+                  <p class="bonus-feature__desc">No extra signup steps needed</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bonus-card__actions">
+              <button data-copy="JONJI" class="copy-btn code-box">
+                <span class="copy-label">JONJI</span>
+                <i data-lucide="copy"></i>
+              </button>
+              <a href="#" class="btn btn-primary bonus-card__claim">
+                Claim Bonus <i data-lucide="chevron-right"></i>
+              </a>
+            </div>
+            <p class="bonus-card__note">
+              <i data-lucide="shield-check"></i> Click the button to instantly register.
+            </p>
+          </article>
+
+          <!-- Card: Juice -->
+          <article class="reveal bonus-card">
+            <div class="bonus-card__header">
+              <span class="bonus-logo-mark">
+                <img src="images/juice.png" alt="Juice logo">
+              </span>
+              <p class="bonus-card__domain">juice.gg</p>
+            </div>
+
+            <div class="bonus-card__features">
+              <div class="bonus-feature">
+                <span class="bonus-icon"><i data-lucide="gift"></i></span>
+                <div>
+                  <p class="bonus-feature__title">3 Free Cases</p>
+                  <p class="bonus-feature__desc">Free CS2 case on signup</p>
+                </div>
+              </div>
+              <div class="bonus-feature">
+                <span class="bonus-icon"><i data-lucide="percent"></i></span>
+                <div>
+                  <p class="bonus-feature__title">5% Purchase Bonus</p>
+                  <p class="bonus-feature__desc">Bonus on every purchase</p>
+                </div>
+              </div>
+              <div class="bonus-feature">
+                <span class="bonus-icon"><i data-lucide="award"></i></span>
+                <div>
+                  <p class="bonus-feature__title">Join Leaderboard Automatically</p>
+                  <p class="bonus-feature__desc">No extra signup steps needed</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bonus-card__actions">
+              <button data-copy="JONJI" class="copy-btn code-box">
+                <span class="copy-label">JONJI</span>
+                <i data-lucide="copy"></i>
+              </button>
+              <a href="#" class="btn btn-primary bonus-card__claim">
+                Claim Bonus <i data-lucide="chevron-right"></i>
+              </a>
+            </div>
+            <p class="bonus-card__note">
+              <i data-lucide="shield-check"></i> Click the button to instantly register.
+            </p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LIVE ON KICK ============ -->
+    <section id="live" class="hairline site-section">
+      <div class="container">
+        <div class="reveal section-intro">
+          <p class="eyebrow">Kick Channel</p>
+          <h2 class="section-heading">Check out if JONJI is live.</h2>
+          <p class="section-subtext">Live gamba sessions - pull up whenever we're on.</p>
+        </div>
+
+        <div class="reveal kick-wrap">
+          <div id="kick-card" class="live-card">
+            <div class="live-card-inner">
+              <div class="kick-video-wrap">
+                <span id="kick-badge" class="kick-badge offline"><span class="status-dot"></span>Checking…</span>
+                <div id="kick-offline-screen" class="kick-offline-screen">
+                  <i data-lucide="video-off"></i>
+                  <p>Stream Offline</p>
+                </div>
+                <div id="kick-player-mount"></div>
+              </div>
+
+              <div class="kick-meta">
+                <div id="kick-avatar" class="live-avatar live-avatar--sm"><img src="logo.webp"></div>
+                <div class="kick-meta__info">
+                  <p class="kick-meta__name">jonjiponji</p>
+                  <p id="kick-sub" class="kick-meta__status">Looking for a signal…</p>
+                </div>
+                <a id="kick-cta" href="https://kick.com/jonjiponji" target="_blank" rel="noopener" class="btn btn-ghost btn--md">
+                  <i data-lucide="external-link"></i> View channel
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COMMUNITY ============ -->
+    <section id="community" class="hairline site-section">
+      <div class="container">
+        <div class="reveal section-intro">
+          <p class="eyebrow">Community</p>
+          <h2 class="section-heading">Find us everywhere else.</h2>
+          <p class="section-subtext">Clips, giveaways, drop alerts, and a place to talk shop with everyone else grinding the leaderboard.</p>
+        </div>
+
+        <div class="reveal community-grid">
+
+          <a href="https://kick.com/jonjiponji" target="_blank" rel="noopener" class="community-card" style="--brand-c:#53FC18">
+            <div class="community-top">
+              <span class="community-mark">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2H8V7H10V5H12V3H14V2H20V8H18V10H16V12H18V14H20V20H14V19H12V17H10V15H8V20H2V2Z" fill="currentColor"/></svg>
+              </span>
+              <span id="community-kick-badge" class="community-live-badge"><span class="status-dot"></span>Live</span>
+            </div>
+            <p class="community-name">Kick</p>
+            <p class="community-desc">Watch drops, case opens, and live gamba sessions.</p>
+            <p class="community-stat"><i data-lucide="users"></i>5.4K followers</p>
+            <span class="community-btn">Watch live <i data-lucide="arrow-up-right"></i></span>
+          </a>
+
+          <a href="https://twitter.com/jonjibet" target="_blank" rel="noopener" class="community-card" style="--brand-c:#f4f4f5">
+            <div class="community-top">
+              <span class="community-mark">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor"/></svg>
+              </span>
+            </div>
+            <p class="community-name">X</p>
+            <p class="community-desc">Drop alerts, bonus codes, and giveaway announcements first.</p>
+            <p class="community-stat"><i data-lucide="users"></i>7.4K+ followers</p>
+            <span class="community-btn">Follow <i data-lucide="arrow-up-right"></i></span>
+          </a>
+
+          <a href="https://youtube.com/@jonjibet" target="_blank" rel="noopener" class="community-card" style="--brand-c:#FF0033">
+            <div class="community-top">
+              <span class="community-mark">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M23.5 6.2a3.02 3.02 0 0 0-2.12-2.14C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.56A3.02 3.02 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3.02 3.02 0 0 0 2.12 2.14C4.5 20.5 12 20.5 12 20.5s7.5 0 9.38-.56a3.02 3.02 0 0 0 2.12-2.14A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8zM9.6 15.6V8.4l6.4 3.6z" fill="currentColor"/></svg>
+              </span>
+            </div>
+            <p class="community-name">YouTube</p>
+            <p class="community-desc">Full-length opens, big win compilations, and channel highlights.</p>
+            <p class="community-stat"><i data-lucide="users"></i>200+ subscribers</p>
+            <span class="community-btn">Subscribe <i data-lucide="arrow-up-right"></i></span>
+          </a>
+
+          <a href="https://discord.gg/jonji" target="_blank" rel="noopener" class="community-card" style="--brand-c:#5865F2">
+            <div class="community-top">
+              <span class="community-mark">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.07.07 0 0 0-.075.035c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.6 12.6 0 0 0-.617-1.25.077.077 0 0 0-.076-.035A19.74 19.74 0 0 0 3.684 4.37a.07.07 0 0 0-.032.027C.533 9.05-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.128c-.598.35-1.22.645-1.873.892a.076.076 0 0 0-.04.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.029 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.055c.5-5.177-.838-9.67-3.549-13.66a.06.06 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.21 0 2.176 1.094 2.157 2.418 0 1.334-.955 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.21 0 2.176 1.094 2.157 2.418 0 1.334-.946 2.419-2.157 2.419z" fill="currentColor"/></svg>
+              </span>
+            </div>
+            <p class="community-name">Discord</p>
+            <p class="community-desc">Chat with the community, get early notification for giveaways and streams.</p>
+            <p class="community-stat"><i data-lucide="users"></i>1.1K+ members</p>
+            <span class="community-btn">Join server <i data-lucide="arrow-up-right"></i></span>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="hairline site-footer">
+      <div class="container">
+
+        <!-- Top row: brand + quick claim -->
+        <div class="reveal footer-cta">
+          <div>
+            <p class="footer-cta__title">Ready when you are.</p>
+            <p class="footer-cta__desc">Grab code JONJI and start stacking rewards today.</p>
+          </div>
+          <div class="footer-cta__actions">
+            <span class="code-tag">JONJI</span>
+            <button data-copy="JONJI" class="copy-btn btn btn-primary btn--md footer-cta__copy">
+              <i data-lucide="copy"></i>
+              <span class="copy-label">Copy code</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="footer-columns">
+          <div>
+            <a href="#top" class="footer-brand__logo">
+              <span class="footer-brand__logo-text"><span class="footer-brand__logo-text--white">Jonji</span>.bet</span>
+            </a>
+            <p class="footer-brand__desc">Claim exclusive bonuses, climb the leaderboard, and unlock VIP perks.</p>
+            <div class="footer-social">
+              <a href="https://kick.com/jonjiponji" target="_blank" rel="noopener" aria-label="Kick" class="footer-social__link">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2H8V7H10V5H12V3H14V2H20V8H18V10H16V12H18V14H20V20H14V19H12V17H10V15H8V20H2V2Z" fill="currentColor"/></svg>
+              </a>
+              <a href="https://discord.gg/jonji" target="_blank" rel="noopener" aria-label="Discord" class="footer-social__link">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.07.07 0 0 0-.075.035c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.6 12.6 0 0 0-.617-1.25.077.077 0 0 0-.076-.035A19.74 19.74 0 0 0 3.684 4.37a.07.07 0 0 0-.032.027C.533 9.05-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.128c-.598.35-1.22.645-1.873.892a.076.076 0 0 0-.04.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.029 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.055c.5-5.177-.838-9.67-3.549-13.66a.06.06 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.21 0 2.176 1.094 2.157 2.418 0 1.334-.955 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.21 0 2.176 1.094 2.157 2.418 0 1.334-.946 2.419-2.157 2.419z" fill="currentColor"/></svg>
+              </a>
+              <a href="https://twitter.com/jonjibet" target="_blank" rel="noopener" aria-label="Twitter / X" class="footer-social__link">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor"/></svg>
+              </a>
+              <a href="https://youtube.com/@jonjibet" target="_blank" rel="noopener" aria-label="YouTube" class="footer-social__link">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M23.5 6.2a3.02 3.02 0 0 0-2.12-2.14C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.56A3.02 3.02 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3.02 3.02 0 0 0 2.12 2.14C4.5 20.5 12 20.5 12 20.5s7.5 0 9.38-.56a3.02 3.02 0 0 0 2.12-2.14A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8zM9.6 15.6V8.4l6.4 3.6z" fill="currentColor"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <h5 class="footer-heading">Explore</h5>
+            <ul class="footer-list">
+              <li><a href="#top">Home</a></li>
+              <li><a href="#bonuses">Bonuses</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h5 class="footer-heading">Support</h5>
+            <ul class="footer-list">
+              <li><a href="#">Contact us</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h5 class="footer-heading">Play responsibly</h5>
+            <div class="footer-responsible">
+              <span class="footer-responsible__badge">18+</span>
+              <p class="footer-responsible__text">Gambling can be addictive. Only play with what you can afford to lose. Help is available.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>© 2026 Jonji.bet — All rights reserved.</p>
+          <p>Affiliate rewards site. Not operated by any gambling operator directly.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Copy toast -->
+  <div id="toast" class="toast">
+    <span class="toast__content"><i data-lucide="check-circle-2"></i> Code JONJI copied</span>
+  </div>
+
+  <script src="js/index.js"></script>
+</body>
+</html>

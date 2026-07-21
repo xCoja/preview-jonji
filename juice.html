@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jonji.bet — Juice Leaderboard</title>
+<meta name="description" content="Climb the Jonji.bet monthly leaderboard. Track live rankings across sponsor casinos and win a share of the prize pool with code JONJI." />
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Wet+Paint&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+  <div class="ambient"></div>
+  <div class="grain"></div>
+  <div id="particle-container" class="particle-container"></div>
+
+  <div class="site-wrapper">
+
+    <!-- ============ NAVBAR ============ -->
+    <header id="nav" class="site-header">
+      <div class="container">
+        <div class="header-inner">
+          <a href="index.html" class="logo">
+            <span class="logo-text">Jonji</span>
+            <span class="logo-text brand">.bet</span>
+          </a>
+
+          <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="leaderboard.html" class="active" aria-current="page">Leaderboard</a>
+            <a href="index.html#">Points Shop</a>
+            <a href="level-up-rewards.html">Level Up Rewards</a>
+            <a href="index.html#">GTB</a>
+            <a href="index.html#">Battleground</a>
+          </nav>
+
+          <div class="header-actions">
+            <!-- Unauthenticated: Login Button -->
+            <button id="kick-login-btn" class="btn-login">
+              <i data-lucide="log-in" class="icon-sm" style="display: inline-block; vertical-align: middle; margin-right: 4px;"></i>
+              Sign in
+            </button>
+            
+            <!-- Authenticated: User Menu (Hidden by default) -->
+          <!-- Authenticated: User Menu (Hidden by default) -->
+<div id="user-menu" style="display: none; position: relative; align-items: center; gap: 0.5rem; cursor: pointer;">
+  <img id="nav-avatar" src="" alt="" style="width: 28px; height: 28px; border-radius: 999px; object-fit: cover; border: 1px solid rgba(255,255,255,0.12);">
+  <span id="nav-username" style="font-size: 13px; font-weight: 600; color: white;" class="nav-username-text"></span>
+  <i data-lucide="chevron-down" class="icon-sm" style="color: var(--text-zinc-400);"></i>
+
+  <!-- Dropdown -->
+  <div id="user-dropdown" class="user-dropdown">
+    <a href="dashboard.html" class="dropdown-item">
+      <i data-lucide="layout-dashboard" class="icon-sm"></i> Dashboard
+    </a>
+    <button id="logout-btn" class="dropdown-item text-brand">
+      <i data-lucide="log-out" class="icon-sm"></i> Sign out
+    </button>
+  </div>
+</div>
+
+            <!-- Action Button -->
+            <a href="index.html#bonuses" class="btn-primary btn-claim">
+              <i data-lucide="gift" class="icon-sm"></i>
+              <span class="claim-text">Claim bonuses</span>
+            </a>
+
+            <!-- Mobile Hamburger Menu -->
+            <button id="mobile-menu-btn" class="mobile-menu-btn">
+              <i data-lucide="menu" class="icon-md"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============ LEADERBOARD HERO ============ -->
+    <section class="hero-section hero-bg">
+      <div class="podium-halo"></div>
+
+      <div class="container">
+        <!-- top meta row -->
+        <div class="reveal hero-meta"></div>
+
+        <!-- prize pool title -->
+        <div class="reveal hero-title-wrapper">
+          <img src="images/juice-chip.png" alt="" class="float-sign juice-chip-1" />
+          <img src="images/juice-chip.png" alt="" class="float-sign d1 juice-chip-2" />
+          <img src="images/juice-chip.png" alt="" class="float-sign d2 juice-chip-3" />
+
+          <h1 id="prizePool" class="headline prize-glow hero-title">JUICE</h1>
+          <h2 class="headline hero-subtitle">LEADERBOARD</h2>
+        </div>
+
+        <!-- casino switch -->
+        <div class="reveal casino-switch-wrapper">
+          <div class="casino-switch">
+            <a href="thrill.html" class="casino-tab">
+              <img src="images/thrill-logo.png" alt="Thrill" class="tab-logo" />
+            </a>
+            <a href="clash.html" class="casino-tab">
+              <img src="images/clash-logo.gif" alt="Clash" class="tab-logo" />
+            </a>
+            <a href="juice.html" class="casino-tab active">
+              <img src="images/juice.png" alt="Juice" class="tab-logo" />
+            </a>
+          </div>
+        </div>
+
+        <!-- what is this casino -->
+        <div class="reveal casino-desc">
+          <p>
+          
+            <span id="casinoDesc"> Use code
+            <span class="brand">JONJI</span> and grind your way to the top. <br>
+            Top players share total of $1,000 prize pool.
+          
+          </p>
+        </div>
+
+        <!-- ============ PODIUM (TOP 3) ============ -->
+        <div id="podium" class="podium podium-wrapper"></div>
+
+         <p class="reveal credits-note">All leaderboard prizes are shown in Juice.gg credits.</p>
+      </div>
+    </section>
+
+    <!-- ============ COUNTDOWN + SPONSOR + PARTICIPANTS ============ -->
+    <section class="bottom-section">
+      <div class="container-sm">
+
+        <!-- countdown -->
+        <div class="reveal countdown-wrapper">
+          <span class="cd-line"></span>
+          <div class="cd-inner">
+            <div class="cd-block"><div id="cdDays" class="cd-num">00</div><div class="cd-label">Days</div></div>
+            <span class="cd-sep">:</span>
+            <div class="cd-block"><div id="cdHours" class="cd-num">00</div><div class="cd-label">Hours</div></div>
+            <span class="cd-sep">:</span>
+            <div class="cd-block"><div id="cdMins" class="cd-num">00</div><div class="cd-label">Mins</div></div>
+            <span class="cd-sep">:</span>
+            <div class="cd-block"><div id="cdSecs" class="cd-num">00</div><div class="cd-label">Secs</div></div>
+          </div>
+          <span class="cd-line"></span>
+        </div>
+
+        <!-- sponsor rakeback banner -->
+      
+
+        <!-- participants -->
+        <div class="reveal participants-section">
+          <div class="participants-title-box">
+            <i data-lucide="users" class="icon-md icon-gold"></i>
+            <h3 class="participants-title">Participants</h3>
+          </div>
+          <div class="row-header">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span>Wagered</span>
+            <span>Prize</span>
+          </div>
+          <div id="participants" class="participants-list"></div>
+        </div>
+
+        <!-- previous winners trigger -->
+        <div class="reveal prev-winners-wrapper">
+          <button id="openPrevWinners" type="button" class="btn-ghost btn-view-prev">
+            <i data-lucide="history" class="icon-sm icon-gold"></i>
+            View Previous Winners
+            <span id="prevPeriodBtn" class="prev-period-text"></span>
+          </button>
+        </div>
+
+        <p class="disclaimer">
+          Rankings update periodically. Usernames are masked for privacy. Winners are paid within 72h of the reset.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <a href="index.html" class="logo">
+              <span class="logo-text">Jonji</span><span class="logo-text brand">.bet</span>
+            </a>
+            <p class="footer-desc">Claim exclusive bonuses, climb the leaderboard, and unlock VIP perks.</p>
+          </div>
+
+          <div>
+            <h5 class="footer-heading">Explore</h5>
+            <ul class="footer-links">
+              <li><a href="main.html">Home</a></li>
+              <li><a href="leaderboard.html">Leaderboard</a></li>
+              <li><a href="index.html#bonuses">Bonuses</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h5 class="footer-heading">Support</h5>
+            <ul class="footer-links">
+              <li><a href="#">Contact us</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h5 class="footer-heading">Play responsibly</h5>
+            <div class="play-safe-box">
+              <span class="age-badge">18+</span>
+              <p class="play-safe-text">Gambling can be addictive. Only play with what you can afford to lose. Help is available.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>© 2026 Jonji.bet — All rights reserved.</p>
+          <p>Affiliate rewards site. Not operated by any gambling operator directly.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Copy toast -->
+  <div id="toast" class="toast">
+    <span class="toast-inner"><i data-lucide="check-circle-2" class="icon-sm icon-brand"></i> Code JONJI copied</span>
+  </div>
+
+  <!-- Previous winners modal -->
+  <div id="prevModalOverlay" class="modal-overlay">
+    <div class="modal-content">
+      <button id="closePrevModal" type="button" class="btn-close">
+        <i data-lucide="x" class="icon-md"></i>
+      </button>
+      <div class="modal-header">
+        <i data-lucide="history" class="icon-md icon-gold"></i>
+        <h3 class="modal-title">Previous Winners</h3>
+      </div>
+      <p id="prevModalPeriod" class="modal-period"></p>
+      <div id="prevModalList" class="modal-list"></div>
+    </div>
+  </div>
+
+  <script src="js/juice-script.js"></script>
+</body>
+</html>
