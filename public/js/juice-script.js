@@ -1,350 +1,327 @@
-/* ============ LEADERBOARD CONFIG & DATA ============ */
-const USE_FILLERS = true;
-const RANK_COUNT = 10;
-
-// index 0 = rank #1, index 1 = rank #2, etc.
-const MANUAL_PRIZES = [
-  500, // #1
-  250, // #2
-  125, // #3
-  75,  // #4
-  50,  // #5
-  0,   // #6
-  0,   // #7
-  0,   // #8
-  0,   // #9
-  0,   // #10
-];
-
-// Fixed reset date/time for this leaderboard period.
-// Set this to the real reset moment — it will NOT move or reset when someone visits/refreshes.
-const COUNTDOWN_END = new Date('2026-07-29T00:00:00Z'); // TODO: set the real end date/time (UTC)
-
-const CASINO = {
-  name: 'Juice',
-  color: '#38bdf8',
-  letter: 'J',
-  logo: 'juice.png',
-  desc: "is a CS2 skins casino. Play cases and games with code",
-  players: [],
-  prevPeriod: 'Last Reset — June 2026',
-  previousWinners: [
-    { name: 'Qu*******', wagered: 210300.50, prize: 3000 },
-    { name: 'ha****', wagered: 88900.20, prize: 1750 },
-    { name: 'Ve**********', wagered: 61200.75, prize: 1000 },
-    { name: 'ta*****', wagered: 42100.40, prize: 700 },
-    { name: 'sn****', wagered: 33200.60, prize: 500 },
-    { name: 'ry***', wagered: 24100.15, prize: 350 },
-    { name: 'ok**', wagered: 15400.90, prize: 200 },
-    { name: 'mv*', wagered: 12100.30, prize: 150 },
-    { name: 'fj*****', wagered: 9800.20, prize: 100 },
-    { name: 'zx**', wagered: 6100.75, prize: 75 },
-  ],
+// ─── CONFIG ──────────────────────────────────────────────────────────────
+const LB_CONFIG = {
+  // TODO: point this at the Juice-specific endpoint (this is still the Thrill one).
+  apiUrl: "https://ap-thrll.vercel.app/api/active",
+  prizes: [500, 200, 100, 50, 50, 25, 25, 25, 25, 25], // matches "$1,000 prize pool" copy on juice.html
+  totalSlots: 10,
+  fallbackAvatar: "images/thrill-pfp.png",
+  // Countdown target — set this to your reset date/time (ISO, UTC).
+  countdownEndUTC: "2026-07-29T00:00:00Z",
 };
 
-const usd = (n) => '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const usdWhole = (n) => '$' + Number(n).toLocaleString('en-US');
-
-/* ---- FETCH LIVE JUICE DATA ---- */
-function maskName(name) {
-  if (!name) return "****";
-  return name.slice(0, 3) + "****";
+// ─── HELPERS ─────────────────────────────────────────────────────────────
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str ?? "";
+  return div.innerHTML;
 }
 
-async function fetchJuiceData() {
-  try {
-    const response = await fetch("https://store.jonji.bet/cache/juice_leaderboard.json");
-    const data = await response.json();
+function formatXP(xp) {
+  return Math.floor(Number(xp) || 0).toLocaleString("en-US");
+}
 
-    let rawParticipants = [];
-    if (data.data && data.data.length > 0 && data.data[0].participants) {
-      rawParticipants = data.data[0].participants;
-    }
+function resolveAvatar(user) {
+  if (!user.avatar || user.avatar === "/assets/anonymous.webp") {
+    return LB_CONFIG.fallbackAvatar;
+  }
+  return user.avatar;
+}
 
-    let leaderboard = rawParticipants.map((p) => ({
-      name: p.username,
-      avatar: p.avatar,
-      wagered: p.adjusted_play_amount || p.play_amount_without_rules || 0,
+function normalizeUsers(rawList) {
+  return (Array.isArray(rawList) ? rawList : [])
+    .map((u) => ({
+      username: u.username ? String(u.username) : "****",
+      xp: parseFloat(u.xp) || 0,
+      avatar: u.avatar || LB_CONFIG.fallbackAvatar,
       isFiller: false,
-    }));
+    }))
+    .sort((a, b) => b.xp - a.xp);
+}
 
-    leaderboard.sort((a, b) => b.wagered - a.wagered);
-    leaderboard = leaderboard.slice(0, RANK_COUNT);
-
-    if (USE_FILLERS) {
-      while (leaderboard.length < RANK_COUNT) {
-        leaderboard.push({
-          name: "_****",
-          avatar: null,
-          wagered: 0,
-          isFiller: true,
-        });
-      }
+function padToSlots(users, count) {
+  return Array.from({ length: count }, (_, i) =>
+    users[i] || {
+      username: "_****",
+      xp: 0,
+      avatar: LB_CONFIG.fallbackAvatar,
+      isFiller: true,
     }
-
-    leaderboard = leaderboard.map((user, index) => ({
-      ...user,
-      name: user.isFiller ? "_****" : maskName(user.name),
-      prize: MANUAL_PRIZES[index] || 0,
-    }));
-
-    CASINO.players = leaderboard;
-  } catch (error) {
-    console.error("Error fetching leaderboard data:", error);
-  } finally {
-    render();
-  }
+  );
 }
 
-/* ---- RENDER PODIUM + LIST + META ---- */
-function getAvatarHtml(avatarUrl, defaultIconClass) {
-  if (avatarUrl && avatarUrl !== "/assets/csgo/avatar-anonymous.png") {
-    return `<img src="${avatarUrl}" alt="avatar" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
-  }
-  return `<i data-lucide="user-round" class="${defaultIconClass}"></i>`;
+// ─── LOADING SKELETON ─────────────────────────────────────────────────────
+// Shows shimmering placeholder cards/rows immediately (before the fetch even
+// starts) so the page never looks empty during the ~1-2s API round trip.
+function injectSkeletonStyles() {
+  if (document.getElementById("lb-skeleton-styles")) return;
+  const style = document.createElement("style");
+  style.id = "lb-skeleton-styles";
+  style.textContent = `
+    @keyframes lbShimmer {
+      0%   { background-position: -420px 0; }
+      100% { background-position: 420px 0; }
+    }
+    .lb-skel {
+      background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.12) 37%, rgba(255,255,255,0.05) 63%);
+      background-size: 800px 100%;
+      animation: lbShimmer 1.4s ease-in-out infinite;
+      border-radius: 6px;
+      display: block;
+    }
+    .podium-card.lb-skel-card,
+    .row.lb-skel-card {
+      pointer-events: none;
+    }
+    .lb-skel-avatar { border-radius: 999px; }
+    .lb-skel-fade-in {
+      animation: lbFadeIn 0.35s ease-out;
+    }
+    @keyframes lbFadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  `;
+  document.head.appendChild(style);
 }
 
-function render() {
-  const c = CASINO;
-
-  // Podium: order visually as #2, #1, #3
-  const top3 = c.players.slice(0, 3);
-  const podium = document.getElementById('podium');
-
-  if (top3.length === 3) {
-    const order = [
-      { p: top3[1], rank: 2, cls: 'rank2' },
-      { p: top3[0], rank: 1, cls: 'rank1' },
-      { p: top3[2], rank: 3, cls: 'rank3' },
-    ];
-    podium.innerHTML = order.map(({ p, rank, cls }) => `
-      <div class="podium-card ${cls}">
-        ${rank === 1 ? '<i data-lucide="crown" class="crown icon-lg"></i>' : ''}
-        <div class="rank-chip">
-          ${getAvatarHtml(p.avatar, rank === 1 ? 'icon-xl' : 'icon-lg')}
-          <span class="rank-hex">${rank}</span>
-        </div>
-        <p class="podium-name ${rank === 1 ? 'text-base' : 'text-sm'}">${p.name}</p>
-        <p class="podium-label">Wagered</p>
-        <p class="podium-wager">${usd(p.wagered)}</p>
-        <div class="prize-bar"><i data-lucide="trophy" class="icon-sm"></i>${usdWhole(p.prize)}</div>
+function podiumSkeletonHTML(rank) {
+  const rankClass = `rank${rank}`;
+  return `
+    <div class="podium-card ${rankClass} lb-skel-card">
+      <div class="rank-chip">
+        <span class="lb-skel lb-skel-avatar" style="width:100%;height:100%;"></span>
       </div>
-    `).join('');
-  }
-
-  // Participants list (rank 4+)
-  const list = document.getElementById('participants');
-  list.innerHTML = c.players.slice(3).map((p, i) => `
-    <div class="row">
-      <span class="row-rank">#${i + 4}</span>
-      <span class="row-avatar">${getAvatarHtml(p.avatar, 'icon-sm')}</span>
-      <span class="row-name">${p.name}</span>
-      <span class="row-wager stat-box">${usd(p.wagered)}</span>
-      <span class="row-prize stat-box">${usdWhole(p.prize)}</span>
-    </div>
-  `).join('');
-
-  // Previous winners modal
-  document.getElementById('prevModalList').innerHTML = (c.previousWinners || []).map((p, i) => {
-    const topCls = i === 0 ? 'top-1' : i === 1 ? 'top-2' : i === 2 ? 'top-3' : '';
-    return `
-    <div class="prev-item ${topCls}">
-      <span class="prev-avatar"><i data-lucide="user-round" class="icon-sm"></i></span>
-      <span class="prev-rank-num">#${i + 1}</span>
-      <span class="row-name">${p.name}</span>
-      <span class="row-wager prev-wager">${usd(p.wagered)}</span>
-      <span class="row-prize">${usdWhole(p.prize)}</span>
+      <span class="lb-skel" style="width:70%;height:14px;margin:14px auto 0;"></span>
+      <span class="lb-skel" style="width:45%;height:9px;margin:10px auto 0;"></span>
+      <span class="lb-skel" style="width:55%;height:20px;margin:6px auto 0;"></span>
+      <span class="lb-skel" style="width:70%;height:32px;margin:14px auto 0;border-radius:8px;"></span>
     </div>
   `;
-  }).join('');
-
-  lucide.createIcons();
 }
 
-/* ---- COUNTDOWN (fixed — does not reset on visit) ---- */
-function tick() {
-  let diff = Math.max(0, COUNTDOWN_END.getTime() - Date.now());
-  const d = Math.floor(diff / 86400000); diff -= d * 86400000;
-  const h = Math.floor(diff / 3600000); diff -= h * 3600000;
-  const m = Math.floor(diff / 60000); diff -= m * 60000;
-  const s = Math.floor(diff / 1000);
-  const pad = (n) => String(n).padStart(2, '0');
-
-  if (document.getElementById('cdDays')) {
-    document.getElementById('cdDays').textContent = pad(d);
-    document.getElementById('cdHours').textContent = pad(h);
-    document.getElementById('cdMins').textContent = pad(m);
-    document.getElementById('cdSecs').textContent = pad(s);
-  }
+function participantSkeletonRowHTML() {
+  return `
+    <div class="row lb-skel-card">
+      <span class="lb-skel" style="width:20px;height:14px;"></span>
+      <span class="row-avatar"><span class="lb-skel lb-skel-avatar" style="width:100%;height:100%;"></span></span>
+      <span class="lb-skel" style="width:60%;height:14px;"></span>
+      <span class="lb-skel" style="width:100%;height:32px;border-radius:8px;"></span>
+      <span class="lb-skel" style="width:100%;height:32px;border-radius:8px;"></span>
+    </div>
+  `;
 }
 
-tick();
-setInterval(tick, 1000);
-
-/* ---- INITIALIZE ---- */
-fetchJuiceData();
-
-
-/* ---- UI INTERACTIONS ---- */
-const nav = document.getElementById('nav');
-const onScroll = () => {
-  if (!nav) return;
-  const inner = nav.querySelector('.header-inner');
-  if (window.scrollY > 12) inner.classList.add('shadow-2xl');
-  else inner.classList.remove('shadow-2xl');
-};
-window.addEventListener('scroll', onScroll, { passive: true });
-onScroll();
-
-const toast = document.getElementById('toast');
-let toastTimer;
-function showToast() {
-  if (!toast) return;
-  toast.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+function renderPodiumSkeleton() {
+  const podiumEl = document.getElementById("podium");
+  if (!podiumEl) return;
+  podiumEl.innerHTML = [2, 1, 3].map(podiumSkeletonHTML).join("");
 }
 
-document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.copy-btn');
-  if (!btn) return;
-  const label = btn.querySelector('.copy-label');
-  const original = label ? label.textContent : '';
-  const code = btn.getAttribute('data-copy') || 'JONJI';
-  navigator.clipboard && navigator.clipboard.writeText(code).catch(() => {});
-  showToast();
-  if (label) { label.textContent = 'Copied!'; setTimeout(() => { label.textContent = original; }, 1500); }
-});
-
-const prevOverlay = document.getElementById('prevModalOverlay');
-const openPrevBtn = document.getElementById('openPrevWinners');
-const closePrevBtn = document.getElementById('closePrevModal');
-
-function openPrevModal() {
-  if (prevOverlay) {
-    prevOverlay.classList.add('show');
-    document.body.style.overflow = 'hidden';
-  }
-}
-function closePrevModal() {
-  if (prevOverlay) {
-    prevOverlay.classList.remove('show');
-    document.body.style.overflow = '';
-  }
+function renderParticipantsSkeleton() {
+  const listEl = document.getElementById("participants");
+  if (!listEl) return;
+  listEl.innerHTML = Array.from({ length: 7 }, participantSkeletonRowHTML).join("");
 }
 
-if (openPrevBtn) openPrevBtn.addEventListener('click', openPrevModal);
-if (closePrevBtn) closePrevBtn.addEventListener('click', closePrevModal);
-if (prevOverlay) prevOverlay.addEventListener('click', (e) => { if (e.target === prevOverlay) closePrevModal(); });
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePrevModal(); });
+// ─── RENDER: PODIUM (top 3) ─────────────────────────────────────────────
+function podiumCardHTML(user, rank) {
+  const rankClass = `rank${rank}`;
+  const nameSizeClass = rank === 1 ? "text-base" : "text-sm";
+  const avatar = resolveAvatar(user);
+  const name = escapeHtml(user.username);
 
-const io = new IntersectionObserver((entries) => {
-  entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-}, { threshold: 0.14 });
-document.querySelectorAll('.reveal').forEach((el, i) => { el.style.transitionDelay = (i % 4) * 60 + 'ms'; io.observe(el); });
-
-(function initParticles() {
-  const container = document.getElementById('particle-container');
-  if (!container) return;
-  function sizeContainer() { container.style.height = document.body.scrollHeight + 'px'; }
-  sizeContainer();
-  window.addEventListener('resize', sizeContainer);
-  window.addEventListener('load', sizeContainer);
-  setTimeout(sizeContainer, 1200);
-  const colors = ['#ef3e3e', '#ff6b6b', '#38bdf8'];
-  for (let i = 0; i < 60; i++) {
-    const p = document.createElement('div');
-    const size = Math.random() * 2.6 + 1;
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    p.className = 'particle';
-    p.style.width = `${size}px`; p.style.height = `${size}px`;
-    p.style.background = color;
-    p.style.boxShadow = `0 0 8px 1.5px ${color}66`;
-    p.style.left = `${Math.random() * 100}%`;
-    p.style.top = `${Math.random() * 100}%`;
-    p.style.opacity = String(Math.random() * 0.35 + 0.15);
-    container.appendChild(p);
-    p.animate([
-      { transform: 'translate(0, 0) scale(1)', opacity: 0 },
-      { opacity: Number(p.style.opacity), offset: 0.15 },
-      { transform: `translate(${(Math.random() - 0.5) * 120}px, -${Math.random() * 260 + 100}px) scale(0)`, opacity: 0 }
-    ], { duration: Math.random() * 8000 + 6000, delay: Math.random() * 5000, iterations: Infinity });
-  }
-})();
-
-
-/* ---- KICK AUTHENTICATION ---- */
-const loginBtn = document.getElementById('kick-login-btn');
-const userMenu = document.getElementById('user-menu');
-const navAvatar = document.getElementById('nav-avatar');
-const navUsername = document.getElementById('nav-username');
-
-if (loginBtn) {
-  loginBtn.addEventListener('click', async () => {
-    try {
-      const res = await fetch('/.netlify/functions/kick-login');
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      }
-    } catch (err) {
-      console.error("Error initiating Kick login:", err);
-    }
-  });
+  return `
+    <div class="podium-card ${rankClass}${user.isFiller ? " is-filler" : ""}">
+      ${rank === 1 ? '<i data-lucide="crown" class="crown icon-lg"></i>' : ""}
+      <div class="rank-chip">
+        <img src="${avatar}" alt="${name} avatar" width="100%" height="100%" style="border-radius:999px;object-fit:cover;">
+        <span class="rank-hex">${rank}</span>
+      </div>
+      <div class="podium-name ${nameSizeClass}">${name}</div>
+      <div class="podium-label">XP Earned</div>
+      <div class="podium-wager">${formatXP(user.xp)}</div>
+      <div class="prize-bar">
+        <i data-lucide="trophy" class="icon-sm"></i>
+        $${LB_CONFIG.prizes[rank - 1]}
+      </div>
+    </div>
+  `;
 }
 
-async function checkAuth() {
+function renderPodium(leaderboard) {
+  const podiumEl = document.getElementById("podium");
+  if (!podiumEl) return;
+
+  // Visual order on the podium is 2nd, 1st, 3rd
+  const order = [
+    { user: leaderboard[1], rank: 2 },
+    { user: leaderboard[0], rank: 1 },
+    { user: leaderboard[2], rank: 3 },
+  ];
+
+  podiumEl.innerHTML = order
+    .map(({ user, rank }) => podiumCardHTML(user, rank))
+    .join("");
+
+  podiumEl.querySelectorAll(".podium-card").forEach((el) => el.classList.add("lb-skel-fade-in"));
+}
+
+// ─── RENDER: PARTICIPANTS (ranks 4-10) ──────────────────────────────────
+function participantRowHTML(user, rank) {
+  const avatar = resolveAvatar(user);
+  const name = escapeHtml(user.username);
+
+  return `
+    <div class="row${user.isFiller ? " is-filler" : ""}">
+      <span class="row-rank">#${rank}</span>
+      <span class="row-avatar">
+        <img src="${avatar}" alt="${name} avatar" width="100%" height="100%" style="border-radius:999px;object-fit:cover;">
+      </span>
+      <span class="row-name">${name}</span>
+      <span class="row-wager stat-box">${formatXP(user.xp)}</span>
+      <span class="row-prize stat-box">$${LB_CONFIG.prizes[rank - 1]}</span>
+    </div>
+  `;
+}
+
+function renderParticipants(leaderboard) {
+  const listEl = document.getElementById("participants");
+  if (!listEl) return;
+
+  listEl.innerHTML = leaderboard
+    .slice(3)
+    .map((user, i) => participantRowHTML(user, i + 4))
+    .join("");
+
+  listEl.querySelectorAll(".row").forEach((el) => el.classList.add("lb-skel-fade-in"));
+}
+
+// ─── FETCH + RENDER ──────────────────────────────────────────────────────
+async function loadLeaderboard() {
+  injectSkeletonStyles();
+  renderPodiumSkeleton();
+  renderParticipantsSkeleton();
+
   try {
-    const res = await fetch('/.netlify/functions/get-user');
-    if (res.ok) {
-      const user = await res.json();
-      if (user && user.username) {
-        if (loginBtn) loginBtn.style.display = 'none';
-        if (userMenu) userMenu.style.display = 'flex';
-        if (navUsername) navUsername.textContent = user.username;
-        if (user.avatar && navAvatar) {
-          navAvatar.src = user.avatar;
-        }
-      }
-    }
+    const res = await fetch(LB_CONFIG.apiUrl);
+    if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
+
+    const data = await res.json();
+    const users = normalizeUsers(data);
+    const leaderboard = padToSlots(users, LB_CONFIG.totalSlots);
+
+    renderPodium(leaderboard);
+    renderParticipants(leaderboard);
+
+    // Re-init Lucide icons for the newly injected markup
+    if (window.lucide?.createIcons) window.lucide.createIcons();
   } catch (err) {
-    console.error("Error checking auth status:", err);
+    console.error("Leaderboard load failed:", err);
   }
 }
 
-checkAuth();
+// ─── COUNTDOWN ───────────────────────────────────────────────────────────
+function startCountdown() {
+  const daysEl = document.getElementById("cdDays");
+  const hoursEl = document.getElementById("cdHours");
+  const minsEl = document.getElementById("cdMins");
+  const secsEl = document.getElementById("cdSecs");
+  if (!daysEl || !hoursEl || !minsEl || !secsEl) return;
 
+  const endTime = new Date(LB_CONFIG.countdownEndUTC).getTime();
 
-/* ---- MOBILE MENU TOGGLE ---- */
-const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-const navLinksDropdown = document.querySelector('.nav-links');
+  function tick() {
+    const remaining = endTime - Date.now();
 
-if (mobileMenuBtn && navLinksDropdown) {
-  mobileMenuBtn.addEventListener('click', () => {
-    navLinksDropdown.classList.toggle('show');
-  });
+    if (remaining <= 0) {
+      [daysEl, hoursEl, minsEl, secsEl].forEach((el) => (el.textContent = "00"));
+      return;
+    }
+
+    const pad = (n) => String(n).padStart(2, "0");
+    const day = Math.floor(remaining / 86400000);
+    const hr = Math.floor((remaining % 86400000) / 3600000);
+    const min = Math.floor((remaining % 3600000) / 60000);
+    const sec = Math.floor((remaining % 60000) / 1000);
+
+    daysEl.textContent = pad(day);
+    hoursEl.textContent = pad(hr);
+    minsEl.textContent = pad(min);
+    secsEl.textContent = pad(sec);
+
+    setTimeout(tick, 1000);
+  }
+
+  tick();
 }
 
+// ─── SCROLL REVEAL ───────────────────────────────────────────────────────
+// Anything with class "reveal" starts at opacity:0 (see styles.css) and only
+// becomes visible once it gets the "in" class. Without this, sections like
+// .participants-section, .countdown-wrapper, .casino-desc, etc. never appear.
+function initRevealAnimations() {
+  const revealEls = document.querySelectorAll(".reveal");
+  if (!revealEls.length) return;
 
-/* ---- USER DROPDOWN & LOGOUT ---- */
-const userDropdown = document.getElementById('user-dropdown');
-const logoutBtn = document.getElementById('logout-btn');
+  if (!("IntersectionObserver" in window)) {
+    // Fallback: just show everything immediately.
+    revealEls.forEach((el) => el.classList.add("in"));
+    return;
+  }
 
-if (userMenu && userDropdown) {
-  userMenu.addEventListener('click', (e) => {
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+          obs.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+  );
+
+  revealEls.forEach((el) => observer.observe(el));
+}
+
+// ─── MISC UI WIRING (mobile menu, user dropdown, prev-winners modal) ─────
+function initMobileMenu() {
+  const btn = document.getElementById("mobile-menu-btn");
+  const nav = document.querySelector(".nav-links");
+  if (!btn || !nav) return;
+  btn.addEventListener("click", () => nav.classList.toggle("show"));
+}
+
+function initUserDropdown() {
+  const menu = document.getElementById("user-menu");
+  const dropdown = document.getElementById("user-dropdown");
+  if (!menu || !dropdown) return;
+  menu.addEventListener("click", (e) => {
     e.stopPropagation();
-    userDropdown.classList.toggle('show');
+    dropdown.classList.toggle("show");
   });
+  document.addEventListener("click", () => dropdown.classList.remove("show"));
+}
 
-  document.addEventListener('click', () => {
-    userDropdown.classList.remove('show');
+function initPrevWinnersModal() {
+  const openBtn = document.getElementById("openPrevWinners");
+  const closeBtn = document.getElementById("closePrevModal");
+  const overlay = document.getElementById("prevModalOverlay");
+  if (!openBtn || !closeBtn || !overlay) return;
+
+  openBtn.addEventListener("click", () => overlay.classList.add("show"));
+  closeBtn.addEventListener("click", () => overlay.classList.remove("show"));
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) overlay.classList.remove("show");
   });
 }
 
-if (logoutBtn) {
-  logoutBtn.addEventListener('click', () => {
-    document.cookie = 'kick_session=; Path=/; Max-Age=0';
-    document.cookie = 'kick_session=; Path=/; Domain=.jonji.bet; Max-Age=0';
-    window.location.href = '/';
-  });
-}
+// ─── INIT ────────────────────────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+  loadLeaderboard();
+  startCountdown();
+  initRevealAnimations();
+  initMobileMenu();
+  initUserDropdown();
+  initPrevWinnersModal();
+});

@@ -62,7 +62,7 @@
     <!-- =======================
          INTERNAL STYLES
     ======================== -->
-  <style>
+<style>
     :root {
       --bg: #0c1313;
       --card-bg: #1B1D29;
@@ -521,18 +521,9 @@
     .confetti-container { position: fixed; inset: 0; pointer-events: none; z-index: 3001; }
     .confetti-piece { position: absolute; width: 8px; height: 8px; border-radius: 2px; }
 
-    @media (max-width: 640px) {
-      .nav-container { padding: 12px 20px; }
-      .hero h1 { font-size: 70px; }
-      .tier-grid { padding: 0 20px 80px; }
-    }
-
     
 
 
-/* =============================================================
-   FOOTER
-   ============================================================= */
 /* =============================================================
    FOOTER
    ============================================================= */
@@ -572,12 +563,6 @@
   padding: 0 24px;
 }
 
-
-
-
-
-
-
     .nav-links a.active {
       filter: brightness(1.6);
     }
@@ -596,13 +581,12 @@
       justify-content: space-between;
       gap: 32px;
       max-width: 680px;
-      width: 100%;
+      width: calc(100% - 40px);
       font-family: 'Inter', sans-serif;
       position: relative;
       overflow: hidden;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-      margin: 0 auto;
-      margin-bottom: 50px;
+      margin: 0 auto 50px;
     }
  
     .wager-timer-card::before {
@@ -663,9 +647,10 @@
     .wager-timer-card.wager-timer-is-expired .wager-timer-dates { color: #3a3a3a; }
  
     .wager-timer-digits {
-      display: flex;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       gap: 8px;
-      flex-shrink: 0;
+      width: 100%;
     }
  
     .wager-timer-digit-block {
@@ -679,7 +664,7 @@
       background: #181818;
       border: 1px solid #2c2c2c;
       border-radius: 8px;
-      width: 62px;
+      width: 100%;
       height: 58px;
       display: flex;
       align-items: center;
@@ -704,19 +689,6 @@
       text-transform: uppercase;
       color: #7b7b7c;
     }
- 
-    @media (max-width: 560px) {
-      .wager-timer-card {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
-      }
-      .wager-timer-digit-box {
-        width: 52px;
-        height: 50px;
-        font-size: 22px;
-      }
-    }
 
     .nav-links li a.new-feature::after {
       content: 'NEW';
@@ -735,7 +707,66 @@
       animation: pulse-badge 2s ease-in-out infinite;
     }
 
+    /* =============================================================
+       RESPONSIVE — mobile breakpoints (consolidated, in cascade order)
+       ============================================================= */
 
+    @media (max-width: 900px) {
+      .wager-timer-card { width: calc(100% - 32px); }
+    }
+
+    @media (max-width: 640px) {
+      .nav-container { padding: 12px 20px; }
+      .hero-title { font-size: 70px; }
+      .tier-grid { padding: 0 20px 80px; }
+    }
+
+    @media (max-width: 560px) {
+      .wager-timer-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
+      .wager-timer-digit-box {
+        height: 50px;
+        font-size: 22px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      /* Collapse "Login with Discord" to just the icon so it stops
+         fighting the logo + hamburger for space */
+      .nav-btn span { display: none; }
+      .nav-btn { padding: 9px 12px; }
+
+      .nav-container { padding: 10px 14px; }
+      .logo img { max-width: 32px; }
+    }
+
+    @media (max-width: 480px) {
+      /* Single-column tier cards below ~480px so the 300px min-width
+         card can't overflow a narrow viewport */
+      .tier-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 0 16px 80px;
+      }
+
+      .tier-card { padding: 24px; }
+
+      .glass-card { padding: 24px; }
+      .modal-box { padding: 32px 24px; }
+
+      .hero { padding: 90px 16px 50px; }
+      .hero-title { font-size: 42px; }
+      .hero-secondary { letter-spacing: 0.15em; }
+    }
+
+    @media (max-width: 380px) {
+      .wager-timer-digits { gap: 6px; }
+      .wager-timer-digit-box { height: 44px; font-size: 18px; }
+      .wager-timer-card { padding: 18px 20px; }
+    }
 
   </style>
 </head>
