@@ -2,7 +2,7 @@
 const LB_CONFIG = {
   // TODO: point this at the Juice-specific endpoint (this is still the Thrill one).
   apiUrl: "https://ap-thrll.vercel.app/api/active",
-  prizes: [500, 200, 100, 50, 50, 25, 25, 25, 25, 25], // matches "$1,000 prize pool" copy on juice.html
+  prizes: [500, 250, 125, 75, 50, 0, 0, 0, 0, 0], // matches "$1,000 prize pool" copy on juice.html
   totalSlots: 10,
   fallbackAvatar: "images/thrill-pfp.png",
   // Countdown target — set this to your reset date/time (ISO, UTC).

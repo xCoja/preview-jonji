@@ -3,7 +3,7 @@ const LB_CONFIG = {
   apiUrl: "https://jonji-api.vercel.app/api/leaderboard/clashgg",
   // Fallback only — the API already returns a "prize" per player for ranks 1-10,
   // which is used automatically when present. This array is just a backup.
-  prizes: [600, 300, 125, 100, 75, 10, 10, 10, 10, 10],
+  prizes: [725, 425, 225, 100, 50, 10, 10, 10, 10, 10],
   totalSlots: 10,
   fallbackAvatar: "images/thrill-pfp.png", // used only when a user has no avatar at all
   useFixedAvatar: false, // Clash: use each user's real avatar from the API
