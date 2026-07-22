@@ -1,7 +1,7 @@
 // ─── CONFIG ──────────────────────────────────────────────────────────────
 const LB_CONFIG = {
   // TODO: point this at the Juice-specific endpoint (this is still the Thrill one).
-  apiUrl: "https://ap-thrll.vercel.app/api/active",
+  apiUrl: "https://store.jonji.bet/cache/juice_leaderboard.json",
   prizes: [500, 250, 125, 75, 50, 0, 0, 0, 0, 0], // matches "$1,000 prize pool" copy on juice.html
   totalSlots: 10,
   fallbackAvatar: "images/thrill-pfp.png",
@@ -16,8 +16,8 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-function formatXP(xp) {
-  return Math.floor(Number(xp) || 0).toLocaleString("en-US");
+function formatWager(amount) {
+  return Math.floor(Number(amount) || 0).toLocaleString("en-US");
 }
 
 function resolveAvatar(user) {
@@ -31,18 +31,18 @@ function normalizeUsers(rawList) {
   return (Array.isArray(rawList) ? rawList : [])
     .map((u) => ({
       username: u.username ? String(u.username) : "****",
-      xp: parseFloat(u.xp) || 0,
+      wager: parseFloat(u.adjusted_play_amount) || 0, // Pulled from adjusted_play_amount instead of xp
       avatar: u.avatar || LB_CONFIG.fallbackAvatar,
       isFiller: false,
     }))
-    .sort((a, b) => b.xp - a.xp);
+    .sort((a, b) => b.wager - a.wager); // Sorted by wagered amount
 }
 
 function padToSlots(users, count) {
   return Array.from({ length: count }, (_, i) =>
     users[i] || {
       username: "_****",
-      xp: 0,
+      wager: 0,
       avatar: LB_CONFIG.fallbackAvatar,
       isFiller: true,
     }
@@ -50,8 +50,6 @@ function padToSlots(users, count) {
 }
 
 // ─── LOADING SKELETON ─────────────────────────────────────────────────────
-// Shows shimmering placeholder cards/rows immediately (before the fetch even
-// starts) so the page never looks empty during the ~1-2s API round trip.
 function injectSkeletonStyles() {
   if (document.getElementById("lb-skeleton-styles")) return;
   const style = document.createElement("style");
@@ -138,8 +136,8 @@ function podiumCardHTML(user, rank) {
         <span class="rank-hex">${rank}</span>
       </div>
       <div class="podium-name ${nameSizeClass}">${name}</div>
-      <div class="podium-label">XP Earned</div>
-      <div class="podium-wager">${formatXP(user.xp)}</div>
+      <div class="podium-label">Wagered</div>
+      <div class="podium-wager">${formatWager(user.wager)}</div>
       <div class="prize-bar">
         <i data-lucide="trophy" class="icon-sm"></i>
         $${LB_CONFIG.prizes[rank - 1]}
@@ -152,7 +150,6 @@ function renderPodium(leaderboard) {
   const podiumEl = document.getElementById("podium");
   if (!podiumEl) return;
 
-  // Visual order on the podium is 2nd, 1st, 3rd
   const order = [
     { user: leaderboard[1], rank: 2 },
     { user: leaderboard[0], rank: 1 },
@@ -178,7 +175,7 @@ function participantRowHTML(user, rank) {
         <img src="${avatar}" alt="${name} avatar" width="100%" height="100%" style="border-radius:999px;object-fit:cover;">
       </span>
       <span class="row-name">${name}</span>
-      <span class="row-wager stat-box">${formatXP(user.xp)}</span>
+      <span class="row-wager stat-box">${formatWager(user.wager)}</span>
       <span class="row-prize stat-box">$${LB_CONFIG.prizes[rank - 1]}</span>
     </div>
   `;
@@ -206,14 +203,17 @@ async function loadLeaderboard() {
     const res = await fetch(LB_CONFIG.apiUrl);
     if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
 
-    const data = await res.json();
-    const users = normalizeUsers(data);
+    const apiResponse = await res.json();
+    
+    // Safely extract the participants array from the nested API response
+    const rawParticipants = apiResponse.data?.[0]?.participants || [];
+    
+    const users = normalizeUsers(rawParticipants);
     const leaderboard = padToSlots(users, LB_CONFIG.totalSlots);
 
     renderPodium(leaderboard);
     renderParticipants(leaderboard);
 
-    // Re-init Lucide icons for the newly injected markup
     if (window.lucide?.createIcons) window.lucide.createIcons();
   } catch (err) {
     console.error("Leaderboard load failed:", err);
@@ -256,15 +256,11 @@ function startCountdown() {
 }
 
 // ─── SCROLL REVEAL ───────────────────────────────────────────────────────
-// Anything with class "reveal" starts at opacity:0 (see styles.css) and only
-// becomes visible once it gets the "in" class. Without this, sections like
-// .participants-section, .countdown-wrapper, .casino-desc, etc. never appear.
 function initRevealAnimations() {
   const revealEls = document.querySelectorAll(".reveal");
   if (!revealEls.length) return;
 
   if (!("IntersectionObserver" in window)) {
-    // Fallback: just show everything immediately.
     revealEls.forEach((el) => el.classList.add("in"));
     return;
   }
@@ -284,7 +280,7 @@ function initRevealAnimations() {
   revealEls.forEach((el) => observer.observe(el));
 }
 
-// ─── MISC UI WIRING (mobile menu, user dropdown, prev-winners modal) ─────
+// ─── MISC UI WIRING ──────────────────────────────────────────────────────
 function initMobileMenu() {
   const btn = document.getElementById("mobile-menu-btn");
   const nav = document.querySelector(".nav-links");
