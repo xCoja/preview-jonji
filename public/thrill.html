@@ -137,7 +137,82 @@
         </div>
 
         <!-- sponsor rakeback banner -->
-     
+     <!-- ============ BONUS BANNER & RULES ACCORDION ============ -->
+<div class="reveal info-section-wrapper">
+
+  <!-- Promo Banner -->
+  <div class="promo-card">
+    <div class="promo-left">
+      <div class="promo-icon-box">
+        <i data-lucide="gift" class="icon-md text-brand"></i>
+      </div>
+      <div>
+        <h4 class="promo-title">Claim up to $3,000 in Instant Bonuses!</h4>
+        <p class="promo-sub">Hit wager milestones on Thrill to unlock your cash rewards.</p>
+      </div>
+    </div>
+    <a href="#" class="btn-check-progress">
+      Check Progress
+      <i data-lucide="arrow-right" class="icon-sm"></i>
+    </a>
+  </div>
+
+  <!-- Rules Accordion -->
+  <div class="rules-card">
+    <button id="toggleRulesBtn" type="button" class="rules-header">
+      <div class="rules-header-title">
+        <i data-lucide="alert-triangle" class="icon-sm icon-warning"></i>
+        <span>Wager abuse will not be tolerated on this LB. <strong>Click to view full rules</strong></span>
+      </div>
+      <i id="rulesChevron" data-lucide="chevron-down" class="icon-sm rules-chevron"></i>
+    </button>
+
+    <div id="rulesBody" class="rules-body">
+      <!-- XP Earning Rates -->
+      <div class="rules-group">
+        <h5 class="rules-group-title">
+          <i data-lucide="star" class="icon-sm icon-gold"></i> XP Earning Rates
+        </h5>
+        <p class="rules-intro">XP is earned based on the game's <strong>Return to Player (RTP)</strong> and bet type:</p>
+        <ul class="rules-list">
+          <li><strong>Sports Bets:</strong> 3 XP per $1 wagered <span class="dim">(Min. odds 1.10)</span></li>
+          <li><strong>97% RTP & below:</strong> 1.5 XP per $1 wagered</li>
+          <li><strong>97% – 99% RTP:</strong> 1 XP per $1 wagered</li>
+          <li><strong>Above 99% RTP:</strong> 0.5 XP per $1 wagered</li>
+        </ul>
+      </div>
+
+      <hr class="rules-divider" />
+
+      <!-- Game Weighting -->
+      <div class="rules-group">
+        <h5 class="rules-group-title">
+          <i data-lucide="info" class="icon-sm icon-info"></i> Game Weighting
+        </h5>
+        <p class="rules-text">
+          To keep the leaderboard fair, <strong>Slot games</strong> provide the most progress. High-RTP or "easy-to-grind" games like <strong>Blackjack and Plinko</strong> count significantly less toward your total.
+        </p>
+      </div>
+
+      <!-- Wager Abuse Policy Box -->
+      <div class="abuse-policy-box">
+        <h5 class="abuse-title">
+          <i data-lucide="shield-alert" class="icon-sm icon-warning"></i> Wager Abuse Policy
+        </h5>
+        <p class="abuse-desc">
+          Wager abuse is strictly prohibited. Engaging in low-risk strategies to "farm" XP will result in immediate removal from the leaderboard and forfeiture of prizes. The following minimums apply:
+        </p>
+        <ul class="abuse-list">
+          <li><i data-lucide="x" class="icon-sm text-red"></i> <strong>Dice:</strong> Below 1.4x odds prohibited</li>
+          <li><i data-lucide="x" class="icon-sm text-red"></i> <strong>Plinko:</strong> Playing on "Low" risk prohibited</li>
+          <li><i data-lucide="x" class="icon-sm text-red"></i> <strong>Crash / Mines / Limbo:</strong> Below 1.2x odds prohibited</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+</div>
 
         <!-- participants -->
         <div class="reveal participants-section">
@@ -237,5 +312,27 @@
   </div>
 
   <script src="js/thrill-script.js"></script>
+
+  <!-- ============ UNCLAIMED REWARDS NOTIFICATION ============ -->
+<div id="rewardsNotification" class="rewards-notification">
+  <button id="closeNotification" type="button" class="btn-close-notif">
+    <i data-lucide="x" class="icon-sm"></i>
+  </button>
+  
+  <div class="notif-content">
+    <div class="notif-icon-box">
+      <i data-lucide="gift" class="icon-md notif-icon-mint"></i>
+    </div>
+    <div class="notif-text">
+      <h5 class="notif-title">Unclaimed Rewards?</h5>
+      <p class="notif-desc">Don't miss out! Check if you have instant cash waiting in your Level Up Rewards.</p>
+    </div>
+  </div>
+  
+  <a href="level-up-rewards.html" class="btn-notif-action">
+    Check Rewards
+    <i data-lucide="arrow-right" class="icon-sm"></i>
+  </a>
+</div>
 </body>
 </html>

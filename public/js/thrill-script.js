@@ -326,3 +326,36 @@ document.addEventListener("DOMContentLoaded", () => {
   initUserDropdown();
   initPrevWinnersModal();
 });
+
+
+/* ---- RULES ACCORDION TOGGLE ---- */
+const toggleRulesBtn = document.getElementById('toggleRulesBtn');
+if (toggleRulesBtn) {
+  toggleRulesBtn.addEventListener('click', () => {
+    const card = toggleRulesBtn.closest('.rules-card');
+    if (card) {
+      card.classList.toggle('open');
+    }
+  });
+}
+
+
+/* ---- UNCLAIMED REWARDS NOTIFICATION ---- */
+document.addEventListener('DOMContentLoaded', () => {
+  const rewardsNotif = document.getElementById('rewardsNotification');
+  const closeNotifBtn = document.getElementById('closeNotification');
+
+  if (rewardsNotif) {
+    // Slide in 2.5 seconds after the page loads
+    setTimeout(() => {
+      rewardsNotif.classList.add('show');
+    }, 2500);
+  }
+
+  if (closeNotifBtn) {
+    // Dismiss notification when 'X' is clicked
+    closeNotifBtn.addEventListener('click', () => {
+      rewardsNotif.classList.remove('show');
+    });
+  }
+});

@@ -571,167 +571,160 @@
       position: relative;
     }
 
-    .wager-timer-card {
-      background: #0d0d0d;
-      border: 1px solid #2a2a2a;
-      border-radius: 14px;
-      padding: 22px 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 32px;
-      max-width: 680px;
-      width: calc(100% - 40px);
-      font-family: 'Inter', sans-serif;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-      margin: 0 auto 50px;
-    }
- 
-    .wager-timer-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(212, 170, 50, 0.3), transparent);
-      pointer-events: none;
-    }
- 
-    .wager-timer-info {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      min-width: 0;
-    }
- 
-    .wager-timer-header {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      color: #7b7b7c;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-    }
- 
-    .wager-timer-header svg {
-      flex-shrink: 0;
-      color: #5a5f68;
-    }
- 
-    .wager-timer-dates {
-      font-size: 20px;
-      font-weight: 700;
-      color: #f0f0f0;
-      letter-spacing: -0.01em;
-    }
- 
-    .wager-timer-note {
-      font-size: 12px;
-      font-weight: 400;
-      color: #7b7b7c;
-    }
- 
-    .wager-timer-expired-msg {
-      display: none;
-      font-size: 12px;
-      font-weight: 600;
-      color: #e05555;
-      letter-spacing: 0.04em;
-    }
- 
-    .wager-timer-card.wager-timer-is-expired .wager-timer-expired-msg { display: block; }
-    .wager-timer-card.wager-timer-is-expired .wager-timer-note { display: none; }
-    .wager-timer-card.wager-timer-is-expired .wager-timer-dates { color: #3a3a3a; }
- 
-    .wager-timer-digits {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      width: 100%;
-    }
- 
-    .wager-timer-digit-block {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-    }
- 
-    .wager-timer-digit-box {
-      background: #181818;
-      border: 1px solid #2c2c2c;
-      border-radius: 8px;
-      width: 100%;
-      height: 58px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Inter', sans-serif;
-      font-size: 26px;
-      font-weight: 700;
-      color: #ffffff;
-      letter-spacing: -0.02em;
-      position: relative;
-      overflow: hidden;
-      transition: box-shadow 0.25s ease, border-color 0.25s ease;
-    }
- 
+ /* ============ WAGER TIMER CARD ============ */
+.wager-timer-card {
+  background: #121215;
+  border: 1px solid rgba(91, 254, 192, 0.2);
+  border-radius: 16px;
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  max-width: 680px;
+  width: calc(100% - 40px);
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.6), 0 0 20px rgba(91, 254, 192, 0.05);
+  margin: 0 auto 50px;
+}
 
+/* Mint Top Glow Line */
+.wager-timer-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #5bfec0, transparent);
+  opacity: 0.6;
+  pointer-events: none;
+}
 
-    .wager-timer-digit-label {
-      font-family: 'Inter', sans-serif;
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-      color: #7b7b7c;
-    }
+.wager-timer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
 
-    .nav-links li a.new-feature::after {
-      content: 'NEW';
-      position: absolute;
-      top: -12px;
-      right: -10px;
-      background: linear-gradient(35deg, #f97316, #ef4444);
-      color: #000000;
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      padding: 2px 5px;
-      border-radius: 4px;
-      line-height: 1.4;
-      transform: rotate(30deg);
-      animation: pulse-badge 2s ease-in-out infinite;
-    }
+.wager-timer-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #5bfec0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
 
-    /* =============================================================
-       RESPONSIVE — mobile breakpoints (consolidated, in cascade order)
-       ============================================================= */
+.wager-timer-header svg {
+  flex-shrink: 0;
+  color: #5bfec0;
+  filter: drop-shadow(0 0 6px rgba(91, 254, 192, 0.4));
+}
 
-    @media (max-width: 900px) {
-      .wager-timer-card { width: calc(100% - 32px); }
-    }
+.wager-timer-dates {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
 
-    @media (max-width: 640px) {
-      .nav-container { padding: 12px 20px; }
-      .hero-title { font-size: 70px; }
-      .tier-grid { padding: 0 20px 80px; }
-    }
+.wager-timer-note {
+  font-size: 13px;
+  color: #a1a1aa;
+}
 
-    @media (max-width: 560px) {
-      .wager-timer-card {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
-      }
-      .wager-timer-digit-box {
-        height: 50px;
-        font-size: 22px;
-      }
-    }
+/* Expired State Styling */
+.wager-timer-expired-msg {
+  display: none;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ef3e3e;
+  letter-spacing: 0.02em;
+}
+
+.wager-timer-card.wager-timer-is-expired {
+  border-color: rgba(239, 62, 62, 0.25);
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.6), 0 0 20px rgba(239, 62, 62, 0.05);
+}
+
+.wager-timer-card.wager-timer-is-expired::before {
+  background: linear-gradient(90deg, transparent, #ef3e3e, transparent);
+}
+
+.wager-timer-card.wager-timer-is-expired .wager-timer-expired-msg { display: block; }
+.wager-timer-card.wager-timer-is-expired .wager-timer-note { display: none; }
+.wager-timer-card.wager-timer-is-expired .wager-timer-dates { color: #52525b; }
+.wager-timer-card.wager-timer-is-expired .wager-timer-header { color: #71717a; }
+.wager-timer-card.wager-timer-is-expired .wager-timer-header svg { color: #71717a; filter: none; }
+.wager-timer-card.wager-timer-is-expired .wager-timer-digit-box { 
+  color: #52525b; 
+  background: rgba(255, 255, 255, 0.02); 
+  border-color: rgba(255, 255, 255, 0.08); 
+  text-shadow: none; 
+}
+
+/* Countdown Digits */
+.wager-timer-digits {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 290px;
+}
+
+.wager-timer-digit-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.wager-timer-digit-box {
+  background: rgba(91, 254, 192, 0.08);
+  border: 1px solid rgba(91, 254, 192, 0.2);
+  border-radius: 10px;
+  width: 100%;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #5bfec0;
+  text-shadow: 0 0 14px rgba(91, 254, 192, 0.4);
+  position: relative;
+}
+
+.wager-timer-digit-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #71717a;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 640px) {
+  .wager-timer-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px 20px;
+    gap: 24px;
+  }
+  .wager-timer-header {
+    justify-content: center;
+  }
+  .wager-timer-digits {
+    max-width: 100%;
+  }
+}
 
     @media (max-width: 600px) {
       /* Collapse "Login with Discord" to just the icon so it stops
@@ -780,7 +773,7 @@
 <nav class="navbar">
   <div class="nav-container">
     <div class="logo">
-      <a href="/"><img src="https://jonji.bet/images/logo.jpg" alt="Jonji Logo"></a>
+      <span>Jonji<span style="color:#ef3e3e ;">.bet</span></span>
     </div>
     
     <ul class="nav-links" id="nav-links">
